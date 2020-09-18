@@ -9,9 +9,9 @@ from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 
 def data_load(dataset, has_v=True, has_a=True, has_t=True):
-    dir_str = './Data/' + dataset
-    train_edge = np.load(dir_str+'/train.npy', allow_pickle=True)
-    user_item_dict = np.load(dir_str+'/user_item_dict.npy', allow_pickle=True).item()
+    dir_str = './dataset_sample/' + dataset
+    train_edge = np.load(dir_str+'/train_sample.npy', allow_pickle=True)
+    user_item_dict = np.load(dir_str+'/user_item_dict_sample.npy', allow_pickle=True).item()
 
     if dataset == 'movielens':
         num_user = 55485

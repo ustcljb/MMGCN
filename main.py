@@ -78,11 +78,11 @@ if __name__ == '__main__':
     train_dataset = TrainingDataset(num_user, num_item, user_item_dict, train_edge)
     train_dataloader = DataLoader(train_dataset, batch_size, shuffle=True, num_workers=num_workers)
 
-    val_data = np.load('./Data/'+data_path+'/val_full.npy', allow_pickle=True)
-    test_data = np.load('./Data/'+data_path+'/test_full.npy', allow_pickle=True)
+    val_data = np.load('./dataset_sample/'+data_path+'/val_sample.npy', allow_pickle=True)
+    test_data = np.load('./dataset_sample/'+data_path+'/test_sample.npy', allow_pickle=True)
     print('Data has been loaded.')
     ##########################################################################################################################################
-    model = Net(v_feat, a_feat, t_feat, None, train_edge, batch_size, num_user, num_item, 'mean', 'False', 2, True, user_item_dict, weight_decay, dim_E).cuda()
+    model = Net(v_feat, a_feat, t_feat, None, train_edge, batch_size, num_user, num_item, 'mean', 'False', 2, True, user_item_dict, weight_decay, dim_E).to(device=device)
     ##########################################################################################################################################
     optimizer = torch.optim.Adam([{'params': model.parameters(), 'lr': learning_rate}])
     ##########################################################################################################################################
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     for epoch in range(num_epoch):
         loss = train(epoch, len(train_dataset), train_dataloader, model, optimizer, batch_size, writer)
         if torch.isnan(loss):
-            with open('./Data/'+data_path+'/result_{0}.txt'.format(save_file), 'a') as save_file:
+            with open('./dataset_sample/'+data_path+'/result_{0}.txt'.format(save_file), 'a') as save_file:
                     save_file.write('lr: {0} \t Weight_decay:{1} is Nan\r\n'.format(learning_rate, weight_decay))
             break
         torch.cuda.empty_cache()
